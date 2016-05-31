@@ -1,13 +1,20 @@
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
 <style type="text/css">
 body {
 	background-image: url("<?php echo $this->webroot.'img/landing5.jpg'; ?>");
 	background-size: cover;
 }
 </style>
-
-<div class="col-md-10 col-md-offset-1" style="margin-top: 100px">
+<div class="col-md-10 col-md-offset-1">
+	<i>
+		<b>
+			<p id="search-title" style="margin-top: 100px; margin-bottom: -40px"></p>
+		</b>
+	</i>
+</div>
+<div class="col-md-10 col-md-offset-1">
 	<table id="facts" class="table table-hover" data-toggle="table"
        data-search="true"
        data-show-refresh="true"
@@ -26,9 +33,9 @@ body {
 			<th data-field="emailing" data-sortable="true">Email</th>
 			<th data-field="promotion-id" data-sorter="prec" data-sortable="true">Promoción</th>
 			<th data-field="money-loose" data-sorter="prec" data-sortable="true">Dinero Perdido</th>			
-			<th data-field="payment-type" data-sorter="prec" data-sortable="true">Tipo de pago</th>			
-			<th data-field="region" data-sorter="prec" data-sortable="true">Región</th>			
-			<th data-field="country" data-sorter="prec" data-sortable="true">País</th>			
+			<th data-field="payment-type" data-sorter="true" data-sortable="true">Tipo de pago</th>			
+			<th data-field="region" data-sorter="true" data-sortable="true">Región</th>			
+			<th data-field="country" data-sorter="true" data-sortable="true">País</th>			
 		</tr>
 		</thead>
 		<tbody id="tbody">
@@ -51,7 +58,55 @@ body {
 			<?php endforeach; ?>
 		</tbody>
 	</table>
+	<div class="col-md-4 pull-right" style="margin-top: 30px">
+		<div class="form-group">
+			<div class="col-md-4">
+				<label style="color:white">Dinero perdido total:</label>
+			</div>
+			<div class="col-md-8">
+				<div class="input-group">
+					<div class="input-group">
+					  <span class="input-group-addon">$</span>
+					  <input type="text" class="form-control"  id="total-loose" readonly>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <script type="text/javascript">
-	$('#facts').bootstrapTable();
+	$(function(){
+		$('#facts').bootstrapTable();
+		getTotal();
+		
+		$('#facts').on('post-body.bs.table', function(e, name, args){
+			getTotal();
+		});
+
+		$('.search input').on('input', function(){
+			 var search = $('.search input').val();
+			 $('#search-title').html('Search: ' + search);
+		});
+
+	});
+
+	function getTotal(){
+		var tableLength = $('#tbody tr').length;
+		var sum = 0;
+
+		for (var i = 0; i < tableLength; i++) {
+			sum += parseFloat($('#tbody').children().get(i).children[8].innerHTML);
+		}
+
+		$('#total-loose').val(sum);
+
+	}
+
+	function prec(a, b){
+		var numero = parseFloat(a);
+		var numero2 = parseFloat(b);
+
+		return numero < numero2 ? -1 : 1;
+	}
+
 </script>
