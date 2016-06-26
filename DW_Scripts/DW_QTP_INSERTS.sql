@@ -1,0 +1,99 @@
+INSERT INTO qtp_dw.dim_courses_promotions (
+		SELECT
+			(SELECT NULL),
+			T1.name AS CourseName,
+			COALESCE(SUM((T1.price * (T3.percent / 100))), 0) AS MoneyLoose
+				FROM  courses AS T1
+					INNER JOIN assistants AS T2 ON T1.id_course = T2.id_course
+					LEFT JOIN courses_discounts AS T3 ON T2.id_discount = T3.id_discount
+					GROUP BY 2
+);
+
+INSERT INTO qtp_dw.dim_assistants_by_region (
+		SELECT
+			(SELECT NULL),
+			Region AS Region,
+			Country AS Country,
+			COUNT(*) AS 'Assistant Number'
+				FROM  assistants
+					GROUP BY 2,3
+					ORDER BY 4 DESC
+);
+
+INSERT INTO qtp_dw.dim_courses_less_assistants (
+		SELECT
+			(SELECT NULL),
+			T1.name AS CategoryName,
+			T3.name AS CourseName,
+			COUNT(*) AS AbsencesNumber
+			FROM  categories AS T1
+				INNER JOIN categories_courses AS T2 ON T1.id_category = T2.id_category
+				INNER JOIN courses AS T3 ON T2.id_course = T3.id_course
+		 		INNER JOIN assistants AS T4 ON T3.id_course = T4.id_course
+					GROUP BY 2,3
+					ORDER BY 4 ASC
+);
+
+INSERT INTO qtp_dw.dim_categories_with_courses_inactives (
+		SELECT
+			(SELECT NULL),
+			T1.name AS CategoryName,
+			T3.name AS CourseName
+			FROM  categories AS T1
+				INNER JOIN categories_courses AS T2 ON T1.id_category = T2.id_category
+				INNER JOIN courses AS T3 ON T2.id_course = T3.id_course
+					WHERE T3.status = 'in'
+ 					ORDER BY 2 DESC 
+);
+
+INSERT INTO qtp_dw.dim_categories_with_courses_actives (
+		SELECT
+			(SELECT NULL),
+			T1.name AS CategoryName,
+			T3.name AS CourseName
+			FROM  categories AS T1
+				INNER JOIN categories_courses AS T2 ON T1.id_category = T2.id_category
+				INNER JOIN courses AS T3 ON T2.id_course = T3.id_course
+					WHERE T3.status = 'ac'
+ 					ORDER BY 2 DESC 
+);
+
+INSERT INTO qtp_dw.dim_categories_courses (
+		SELECT
+			(SELECT NULL),
+			T1.name AS CategoryName,
+			T3.name AS CourseName
+			FROM  categories AS T1
+				INNER JOIN categories_courses AS T2 ON T1.id_category = T2.id_category
+				INNER JOIN courses AS T3 ON T2.id_course = T3.id_course
+ 					ORDER BY 2 ASC 
+);
+
+INSERT INTO qtp_dw.dim_categories_courses_number (
+		SELECT
+			(SELECT NULL),
+			T1.name AS CategoryName,
+			COUNT(*) AS CourseNumber
+			FROM  categories AS T1
+				INNER JOIN categories_courses AS T2 ON T1.id_category = T2.id_category
+				INNER JOIN courses AS T3 ON T2.id_course = T3.id_course
+					GROUP BY 2 
+					ORDER BY 3 DESC
+);
+
+INSERT INTO qtp_dw.dim_courses_time (
+	SELECT NULL,
+	T.name AS CourseName,
+	DATE(T.start_event_date) AS Date,
+	YEAR(T.start_event_date) AS Year,
+	Quarter(T.start_event_date) AS Quarter,
+	DATE_FORMAT(T.start_event_date, '%M') AS Month,
+	DATE_FORMAT(T.start_event_date, '%U') AS Week,
+	
+	DATE(T.end_event_date) AS Date,
+	YEAR(T.end_event_date) AS Year,
+	Quarter(T.end_event_date) AS Quarter,
+	DATE_FORMAT(T.end_event_date, '%M') AS Month,
+	DATE_FORMAT(T.end_event_date, '%U') AS Week
+		FROM courses AS T
+);
