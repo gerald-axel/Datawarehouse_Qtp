@@ -3,7 +3,6 @@ App::uses('AppModel', 'Model');
 /**
  * DimAssistant Model
  *
- * @property try $try
  */
 class DimAssistant extends AppModel {
 
@@ -14,11 +13,8 @@ class DimAssistant extends AppModel {
  */
 	public $primaryKey = 'Id';
 
-
-	// The Associations below have been created with all possible keys, those that are not needed can be removed
-
 /**
- * belongsTo associations
+ * Validation rules
  *
  * @var array
  */

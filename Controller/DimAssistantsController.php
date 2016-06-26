@@ -5,8 +5,6 @@ App::uses('AppController', 'Controller');
  *
  * @property DimAssistant $DimAssistant
  * @property PaginatorComponent $Paginator
- * @property FlashComponent $Flash
- * @property SessionComponent $Session
  */
 class DimAssistantsController extends AppController {
 
@@ -15,7 +13,7 @@ class DimAssistantsController extends AppController {
  *
  * @var array
  */
-	public $components = array('Paginator', 'Flash', 'Session');
+	public $components = array('Paginator');
 
 /**
  * index method
@@ -23,9 +21,8 @@ class DimAssistantsController extends AppController {
  * @return void
  */
 	public function index() {
-		//$this->DimAssistant->recursive = 0;
-		//$this->set('dimAssistants', $this->Paginator->paginate());
-		$this->log($this->Paginator->paginate());
+		$this->DimAssistant->recursive = 0;
+		$this->set('dimAssistants', $this->Paginator->paginate());
 	}
 
 /**
@@ -97,7 +94,6 @@ class DimAssistantsController extends AppController {
 			throw new NotFoundException(__('Invalid dim assistant'));
 		}
 		$this->request->allowMethod('post', 'delete');
-
 		if ($this->DimAssistant->delete()) {
 			$this->Flash->success(__('The dim assistant has been deleted.'));
 		} else {

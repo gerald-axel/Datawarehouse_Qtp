@@ -8,7 +8,8 @@ INSERT INTO qtp_dw.facts (
 			T10.Id AS PromotionID,
 			T9.Id AS PaymentType,
 			T11.Id AS RegionId,
-			COALESCE(((T2.price * (T5.percent / 100))), 0) AS MoneyLoose
+			COALESCE(((T2.price * (T5.percent / 100))), 0) AS MoneyLoose,
+			T2.price - (T4.initial_import + (SELECT MoneyLoose)) AS MoneyOwe
 			FROM  categories AS T1
 				INNER JOIN courses AS T2
 				INNER JOIN categories_courses AS T3 ON T1.id_category = T3.id_category AND T3.id_course = T2.id_course

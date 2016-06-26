@@ -3,18 +3,18 @@
 
 <style type="text/css">
 body {
-	background-image: url("<?php echo $this->webroot.'img/landing5.jpg'; ?>");
+	background-image: url("<?php echo $this->webroot.'img/landing2.jpg'; ?>");
 	background-size: cover;
 }
 </style>
-<div class="col-md-10 col-md-offset-1">
+<div class="col-md-11 col-md-offset-1">
 	<i>
 		<b>
 			<p id="search-title" style="margin-top: 100px; margin-bottom: -40px"></p>
 		</b>
 	</i>
 </div>
-<div class="col-md-10 col-md-offset-1">
+<div class="container-fluid">
 	<table id="facts" class="table table-hover" data-toggle="table"
        data-search="true"
        data-show-refresh="true"
@@ -33,6 +33,7 @@ body {
 			<th data-field="emailing" data-sortable="true">Email</th>
 			<th data-field="promotion-id" data-sorter="prec" data-sortable="true">Promoción</th>
 			<th data-field="money-loose" data-sorter="prec" data-sortable="true">Dinero Perdido</th>			
+			<th data-field="money-missing" data-sorter="prec" data-sortable="true">Dinero Faltante</th>			
 			<th data-field="payment-type" data-sorter="true" data-sortable="true">Tipo de pago</th>			
 			<th data-field="region" data-sorter="true" data-sortable="true">Región</th>			
 			<th data-field="country" data-sorter="true" data-sortable="true">País</th>			
@@ -51,6 +52,7 @@ body {
 					<td><?php echo h($fact['T4']['EmalingID']); ?></td>
 					<td><?php echo h($fact[0]['PromotionID']); ?></td>
 					<td><?php echo h($fact['T1']['MoneyLoose']); ?></td>
+					<td><?php echo h($fact['T1']['MoneyOwe']); ?></td>
 					<td><?php echo h($fact['T5']['PaymentType']); ?></td>
 					<td><?php echo h($fact['T7']['Region']); ?></td>
 					<td><?php echo h($fact['T7']['Country']); ?></td>
@@ -58,16 +60,37 @@ body {
 			<?php endforeach; ?>
 		</tbody>
 	</table>
-	<div class="col-md-4 pull-right" style="margin-top: 30px">
-		<div class="form-group">
-			<div class="col-md-4">
-				<label style="color:white">Dinero perdido total:</label>
-			</div>
-			<div class="col-md-8">
-				<div class="input-group">
+	<div class="row">
+		<div class="col-md-4 pull-right" style="margin-top: 30px">
+			<div class="form-group">
+				<div class="col-md-4">
+					<label style="color:white">Dinero perdido total:</label>
+				</div>
+				<div class="col-md-8">
 					<div class="input-group">
-					  <span class="input-group-addon">$</span>
-					  <input type="text" class="form-control"  id="total-loose" readonly>
+						<div class="input-group">
+						  <span class="input-group-addon">$</span>
+						  <input type="text" class="form-control"  id="total-loose" readonly>
+						    <span class="input-group-addon">.00</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+	<div class="row">
+		<div class="col-md-4 pull-right" style="margin-top: 30px">
+			<div class="form-group">
+				<div class="col-md-4">
+					<label style="color:white">Dinero faltante total:</label>
+				</div>
+				<div class="col-md-8">
+					<div class="input-group">
+						<div class="input-group">
+						  <span class="input-group-addon">$</span>
+						  <input type="text" class="form-control"  id="total-missing" readonly>
+  							<span class="input-group-addon">.00</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -92,13 +115,16 @@ body {
 
 	function getTotal(){
 		var tableLength = $('#tbody tr').length;
-		var sum = 0;
+		var sumMoneyLoose = 0;
+		var sumMoneyMissing = 0;
 
 		for (var i = 0; i < tableLength; i++) {
-			sum += parseFloat($('#tbody').children().get(i).children[8].innerHTML);
+			sumMoneyLoose += parseFloat($('#tbody').children().get(i).children[8].innerHTML);
+			sumMoneyMissing += parseFloat($('#tbody').children().get(i).children[9].innerHTML);
 		}
 
-		$('#total-loose').val(sum);
+		$('#total-loose').val(sumMoneyLoose.toLocaleString());
+		$('#total-missing').val(sumMoneyMissing.toLocaleString());
 
 	}
 

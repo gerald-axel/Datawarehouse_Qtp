@@ -13,7 +13,7 @@ class DimAssistantTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'app.dim_assistant',
-		'app.try'
+		'app.fact'
 	);
 
 /**

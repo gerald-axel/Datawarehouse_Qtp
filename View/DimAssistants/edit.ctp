@@ -17,5 +17,7 @@
 
 		<li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('DimAssistant.Id')), array('confirm' => __('Are you sure you want to delete # %s?', $this->Form->value('DimAssistant.Id')))); ?></li>
 		<li><?php echo $this->Html->link(__('List Dim Assistants'), array('action' => 'index')); ?></li>
+		<li><?php echo $this->Html->link(__('List Facts'), array('controller' => 'facts', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Fact'), array('controller' => 'facts', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

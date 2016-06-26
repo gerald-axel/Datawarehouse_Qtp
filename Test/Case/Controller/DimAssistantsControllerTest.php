@@ -12,7 +12,8 @@ class DimAssistantsControllerTest extends ControllerTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.dim_assistant'
+		'app.dim_assistant',
+		'app.fact'
 	);
 
 /**

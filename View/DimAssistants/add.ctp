@@ -15,5 +15,7 @@
 	<ul>
 
 		<li><?php echo $this->Html->link(__('List Dim Assistants'), array('action' => 'index')); ?></li>
+		<li><?php echo $this->Html->link(__('List Facts'), array('controller' => 'facts', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Fact'), array('controller' => 'facts', 'action' => 'add')); ?> </li>
 	</ul>
 </div>
